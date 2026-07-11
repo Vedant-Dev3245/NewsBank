@@ -3,7 +3,6 @@ import NewsItem from "./NewsItem";
 import Spinner from "./Spinner"
 import InfiniteScroll from "react-infinite-scroll-component";
 
-
 export default function News(props) {
   const [state, setstate] = useState({
     articles: [],
@@ -16,13 +15,12 @@ export default function News(props) {
     return temp.charAt(0).toUpperCase()+temp.slice(1)
   }
 
-
   const loadnews=async(temp)=>{
-props.setProgress(0);
+    props.setProgress(0);
     setstate({
       ...state,
       loading:true,})
-      let url = `https://newsapi.org/v2/top-headlines?country=us&category=${props.category}&apiKey=${props.apikey}&page=${temp}&pageSize=${props.pageSize}`;
+      let url = `/api/news?category=${props.category}&page=${temp}&pageSize=${props.pageSize}`;
       props.setProgress(20)
       const data = await fetch(url);
       props.setProgress(40)
@@ -43,7 +41,7 @@ props.setProgress(0);
 
   const fetchMoreData=async ()=>{
     const temp=state.page+1
-    let url = `https://newsapi.org/v2/top-headlines?country=us&category=${props.category}&apiKey=${props.apikey}&page=${temp}&pageSize=${props.pageSize}`;
+    let url = `/api/news?category=${props.category}&page=${temp}&pageSize=${props.pageSize}`;
       const data = await fetch(url);
       const parsedData = await data.json();
       setstate({
@@ -57,9 +55,6 @@ props.setProgress(0);
 useEffect(() => {
   fetchData();
 }, []);
-// useEffect(() => {
-//   console.log("Articles:", state.articles.length, "Total:", state.totalResults);
-// }, [state.articles, state.totalResults]);
 
   return (
     <>
@@ -77,16 +72,13 @@ useEffect(() => {
         { state.articles.map((element) => {
           return (
             <div className="col-md-4" key={element.url}>
-                <NewsItem title={element.title}description={element.description} imgUrl={element.urlToImage} newsUrl={element.url} author={element.author?element.author:"Unknown"} date={element.publishedAt} source={element.source.name} />
+                <NewsItem title={element.title} description={element.description} imgUrl={element.urlToImage} newsUrl={element.url} author={element.author?element.author:"Unknown"} date={element.publishedAt} source={element.source.name} />
               </div>
             );
           })}
       </div>
       </div>
       </InfiniteScroll>
-       
-      
-    
     </>
   );
 }
