@@ -51,9 +51,9 @@ export default function News(props) {
         totalResults:parsedData.totalResults
       });
   }
-// eslint-disable-next-line react-hooks/exhaustive-deps
 useEffect(() => {
   fetchData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
 }, []);
 
   return (
